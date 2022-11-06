@@ -1,0 +1,1649 @@
+{
+  "name": "Inventory Bot-action",
+  "type": "action",
+  "counts": {
+    "actions": 4,
+    "intents": 2,
+    "entities": 17,
+    "data_types": 0,
+    "global_variables": 8
+  },
+  "status": "Available",
+  "language": "en",
+  "skill_id": "f2332e01-c6b2-401e-9e14-0291fc98acb7",
+  "workspace": {
+    "actions": [
+      {
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I'm afraid I don't understand. I can connect you to an agent."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_001",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Step validation failed"
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Sorry I couldn't assist you. I will connect you to an agent right away."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Agent requested"
+                }
+              ]
+            },
+            "next_step": "step_003"
+          },
+          {
+            "step": "step_003",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I am afraid I do not understand what you are asking, let me connect you to an agent."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_003",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "No action matches"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Fallback",
+        "action": "fallback",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "fallback_connect_to_agent"
+        },
+        "variables": [
+          {
+            "title": "I'm afraid I don't understand. I can connect you to an agent.",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "title": "Sorry I couldn't assist you. I will connect you to an agent righ",
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "title": "I am afraid I do not understand what you are asking, let me conn",
+            "variable": "step_003",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "anything_else",
+        "disambiguation_opt_out": true
+      },
+      {
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I'm afraid I don't understand. Please rephrase your question."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001",
+            "condition": {
+              "lte": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": ""
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "fallback",
+                "parameters": null,
+                "result_variable": "step_002_result_1"
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "gt": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            }
+          }
+        ],
+        "title": "No action matches",
+        "action": "anything_else",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "anything_else"
+        },
+        "variables": [
+          {
+            "title": "I am afraid I do not understand what you are asking, please re-p",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002_result_1",
+            "data_type": "any"
+          }
+        ],
+        "disambiguation_opt_out": true
+      },
+      {
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Welcome, how can I assist you?"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001"
+          }
+        ],
+        "title": "Greet customer",
+        "action": "welcome",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "welcome"
+        },
+        "variables": [
+          {
+            "variable": "step_001",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "action_26747",
+        "disambiguation_opt_out": true
+      },
+      {
+        "steps": [
+          {
+            "step": "step_445",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "I can help you with:"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Book an appointment",
+                      "value": {
+                        "input": {
+                          "text": "Book an appointment"
+                        }
+                      }
+                    },
+                    {
+                      "label": "Need help",
+                      "value": {
+                        "input": {
+                          "text": "Need help"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text": "I didn't catch that. Select a valid option:"
+                        }
+                      ],
+                      "response_type": "text"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "entity_6764",
+              "max_tries": 3
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_445",
+            "next_step": "step_998"
+          },
+          {
+            "step": "step_998",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Did you mean:"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Branches around you",
+                      "value": {
+                        "input": {
+                          "text": "Branches around you"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text": "I didn't catch that. Select a valid option:"
+                        }
+                      ],
+                      "response_type": "text"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "entity_9582",
+              "max_tries": 3
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_998",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_445"
+                },
+                {
+                  "value": "Need help",
+                  "from_entity": "entity_6764"
+                }
+              ]
+            },
+            "next_step": "step_950"
+          },
+          {
+            "step": "step_950",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Our agent will contract you within 5 mins!"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_950",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_445"
+                },
+                {
+                  "value": "Book an appointment",
+                  "from_entity": "entity_6764"
+                }
+              ]
+            },
+            "next_step": "step_475"
+          },
+          {
+            "step": "step_475",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "These are the branches:Madurai,Coimbatore,Chennai,Salem. Do you want to know branch around you?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "yes",
+                      "value": {
+                        "input": {
+                          "text": "yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text": "I didn't catch that. Select a valid option:"
+                        }
+                      ],
+                      "response_type": "text"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "entity_12706",
+              "max_tries": 3
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_475",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_998"
+                },
+                {
+                  "value": "Branches around you",
+                  "from_entity": "entity_9582"
+                }
+              ]
+            },
+            "next_step": "step_522"
+          },
+          {
+            "step": "step_522",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "No problem! We can help you find the branch closest to you.What's your zip code?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_522",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_475"
+                },
+                {
+                  "value": "yes",
+                  "from_entity": "entity_12706"
+                }
+              ]
+            },
+            "next_step": "step_786"
+          },
+          {
+            "step": "step_786",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Your closest branch is in Chennai."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Our hours are 7am-6pm PST,Mondays through Fridays."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_786",
+            "condition": {
+              "exists": {
+                "variable": "step_522"
+              }
+            },
+            "next_step": "step_814"
+          },
+          {
+            "step": "step_814",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Great! Which store are you inquiring about today?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Coimbatore",
+                      "value": {
+                        "input": {
+                          "text": "Coimbatore"
+                        }
+                      }
+                    },
+                    {
+                      "label": "Chennai",
+                      "value": {
+                        "input": {
+                          "text": "Chennai"
+                        }
+                      }
+                    },
+                    {
+                      "label": "Madurai",
+                      "value": {
+                        "input": {
+                          "text": "Madurai"
+                        }
+                      }
+                    },
+                    {
+                      "label": "Salem",
+                      "value": {
+                        "input": {
+                          "text": "Salem"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text": "I didn't catch that. Select a valid option:"
+                        }
+                      ],
+                      "response_type": "text"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "entity_10195",
+              "max_tries": 3
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_814",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_475"
+                },
+                {
+                  "value": "No",
+                  "from_entity": "entity_12706"
+                }
+              ]
+            },
+            "next_step": "step_737"
+          },
+          {
+            "step": "step_737",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thanks! Our hours are 9am-3pm ,Mondays through Saturdays."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_737",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_814"
+                },
+                {
+                  "value": "Coimbatore",
+                  "from_entity": "entity_10195"
+                }
+              ]
+            },
+            "next_step": "step_903"
+          },
+          {
+            "step": "step_903",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thanks! Our Hospital is open between 9am-3pm , Mondays through Saturdays."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_903",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_814"
+                },
+                {
+                  "value": "Madurai",
+                  "from_entity": "entity_10195"
+                }
+              ]
+            },
+            "next_step": "step_502"
+          },
+          {
+            "step": "step_502",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thanks! Our Hospital hours are between 7am-6pm , Mondays through Fridays."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_502",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_814"
+                },
+                {
+                  "value": "Salem",
+                  "from_entity": "entity_10195"
+                }
+              ]
+            },
+            "next_step": "step_240"
+          },
+          {
+            "step": "step_240",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thanks! Our Hospital store hours are between 10am-6pm CST, Mondays through Thrusdays."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_240",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_814"
+                },
+                {
+                  "value": "Chennai",
+                  "from_entity": "entity_10195"
+                }
+              ]
+            },
+            "next_step": "step_976"
+          },
+          {
+            "step": "step_976",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thank You! visit again."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_976",
+            "condition": {
+              "or": [
+                {
+                  "exists": {
+                    "variable": "step_737"
+                  }
+                },
+                {
+                  "exists": {
+                    "variable": "step_903"
+                  }
+                },
+                {
+                  "exists": {
+                    "variable": "step_502"
+                  }
+                },
+                {
+                  "exists": {
+                    "variable": "step_240"
+                  }
+                },
+                {
+                  "exists": {
+                    "variable": "step_950"
+                  }
+                },
+                {
+                  "exists": {
+                    "variable": "step_786"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Hospital bot",
+        "action": "action_26747",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_26747_intent_18730"
+        },
+        "variables": [
+          {
+            "title": "Thanks! Our Hospital store hours are between 10am-6pm CST, Monda",
+            "variable": "step_240",
+            "data_type": "any"
+          },
+          {
+            "title": "Great! Which store are you inquiring about today?",
+            "variable": "step_436",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Our Texas store hours are between **10am-6pm CST, Monday",
+            "variable": "step_440",
+            "data_type": "any"
+          },
+          {
+            "title": "I can help you with:",
+            "variable": "step_445",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Our {variable} store hours are between **9am-3pm EST, Mo",
+            "variable": "step_469",
+            "data_type": "any"
+          },
+          {
+            "title": "These are the branches:Madurai,Coimbatore,Chennai,Salem. Do you ",
+            "variable": "step_475",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Our Hospital hours are between 7am-6pm , Mondays through",
+            "variable": "step_502",
+            "data_type": "any"
+          },
+          {
+            "title": "Let me get that information for you. Do you know which store you",
+            "variable": "step_512",
+            "data_type": "any"
+          },
+          {
+            "title": "No problem! We can help you find the branch closest to you.What'",
+            "variable": "step_522",
+            "data_type": "any"
+          },
+          {
+            "title": "No problem! We can help you find the store closest to you. What'",
+            "variable": "step_604",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Your closest store is in **Hollywood**. <br /> Our hours",
+            "variable": "step_608",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Your closest store is in **Tribeca**. <br /> Our hours a",
+            "variable": "step_629",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Our hours are 9am-3pm ,Mondays through Saturdays.",
+            "variable": "step_737",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Our California store hours are between 7am-6pm PST, Mond",
+            "variable": "step_747",
+            "data_type": "any"
+          },
+          {
+            "title": "Your closest branch is in Chennai.",
+            "variable": "step_786",
+            "data_type": "any"
+          },
+          {
+            "title": "Great! Which store are you inquiring about today?",
+            "variable": "step_814",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks! Our Hospital is open between 9am-3pm , Mondays through S",
+            "variable": "step_903",
+            "data_type": "any"
+          },
+          {
+            "title": "Our agent will contract you within 5 mins!",
+            "variable": "step_950",
+            "data_type": "any"
+          },
+          {
+            "title": "Thank You! visit again.",
+            "variable": "step_976",
+            "data_type": "any"
+          },
+          {
+            "title": "Did you mean:",
+            "variable": "step_998",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "fallback",
+        "topic_switch": {
+          "allowed_from": false,
+          "allowed_into": false
+        },
+        "disambiguation_opt_out": false
+      }
+    ],
+    "intents": [
+      {
+        "intent": "fallback_connect_to_agent",
+        "examples": [
+          {
+            "text": "Call agent"
+          },
+          {
+            "text": "Agent help"
+          },
+          {
+            "text": "I would like to speak to a human"
+          },
+          {
+            "text": "Can I connect to an agent?"
+          },
+          {
+            "text": "I would like to speak to someone"
+          }
+        ],
+        "description": "Please transfer me to an agent"
+      },
+      {
+        "intent": "action_26747_intent_18730",
+        "examples": [
+          {
+            "text": "Can you tell me how late the stores are open till?"
+          },
+          {
+            "text": "Does the store open on weekends?"
+          },
+          {
+            "text": "How early do you open?"
+          },
+          {
+            "text": "How long are you open?"
+          },
+          {
+            "text": "Is the branch open now?"
+          },
+          {
+            "text": "Store hours"
+          },
+          {
+            "text": "What are the business hours of the store nearest to me?"
+          },
+          {
+            "text": "What are the hours of operation?"
+          },
+          {
+            "text": "What are the saturday opening times for the local store?"
+          },
+          {
+            "text": "What are ur opening hours?"
+          },
+          {
+            "text": "What are your hours?"
+          },
+          {
+            "text": "Are the stores open early?"
+          },
+          {
+            "text": "What time are you closing today?"
+          },
+          {
+            "text": "What time does the store shut on a saturday?"
+          },
+          {
+            "text": "What time do stores close?"
+          },
+          {
+            "text": "What time is your store open on saturday?"
+          },
+          {
+            "text": "When are you open?"
+          },
+          {
+            "text": "When can I come to your store?"
+          },
+          {
+            "text": "I can help you with"
+          },
+          {
+            "text": "hey bot"
+          },
+          {
+            "text": "Hai"
+          },
+          {
+            "text": "hello hai"
+          },
+          {
+            "text": "What is the opening time for your store?"
+          },
+          {
+            "text": "Are you open during thanksgiving?"
+          },
+          {
+            "text": "Are you open on bank holidays?"
+          },
+          {
+            "text": "Are you open on sundays, and if so what are the hours?"
+          },
+          {
+            "text": "At what hour can I swing by?"
+          }
+        ]
+      }
+    ],
+    "entities": [
+      {
+        "entity": "entity_12706",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "No",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "yes",
+            "synonyms": []
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "entity_36120",
+        "values": [
+          {
+            "type": "patterns",
+            "value": "Email",
+            "patterns": [
+              "\\b(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])\\b"
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-currency",
+        "values": []
+      },
+      {
+        "entity": "entity_10195",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "Coimbatore",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "Salem",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "Madurai",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "Chennai",
+            "synonyms": []
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-date",
+        "values": []
+      },
+      {
+        "entity": "entity_17250",
+        "values": [
+          {
+            "type": "patterns",
+            "value": "Regular_expression",
+            "patterns": [
+              "\"^(?:.*[a-z])(?:.*[A-Z])(?:.*\\d)(?:.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$\""
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "entity_49049",
+        "values": [
+          {
+            "type": "patterns",
+            "value": "Regular_expression",
+            "patterns": [
+              "^\\d{5}$"
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "entity_39594",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "No",
+            "synonyms": [
+              "Nah",
+              "no",
+              "nope",
+              "not right",
+              "wrong"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "Yes",
+            "synonyms": [
+              "correct",
+              "precisely",
+              "ya",
+              "yep",
+              "Yes"
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-percentage",
+        "values": []
+      },
+      {
+        "entity": "entity_25899",
+        "values": [
+          {
+            "type": "patterns",
+            "value": "Email",
+            "patterns": [
+              "\\b(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])\\b"
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-time",
+        "values": []
+      },
+      {
+        "entity": "entity_7407",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "Hollywood",
+            "synonyms": [
+              "CA",
+              "California"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "Chelsea",
+            "synonyms": [
+              "23rd Street",
+              "West Side"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "Williamsburg",
+            "synonyms": [
+              "Brooklyn",
+              "East Williamsburg"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "Tribeca",
+            "synonyms": [
+              "Hudson"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "Times Square",
+            "synonyms": [
+              "42 st",
+              "broadway",
+              "by the billboards",
+              "Times sq"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "The Domain",
+            "synonyms": [
+              "Austin",
+              "Texas"
+            ]
+          },
+          {
+            "type": "synonyms",
+            "value": "SoHo",
+            "synonyms": [
+              "downtown",
+              "shopping district",
+              "South Houston"
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "entity_11750",
+        "values": [
+          {
+            "type": "patterns",
+            "value": "Regular_expression",
+            "patterns": [
+              "\"^(?:.*[a-z])(?:.*[A-Z])(?:.*\\d)(?:.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$\""
+            ]
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-yes-no",
+        "values": []
+      },
+      {
+        "entity": "entity_9582",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "Branches around you",
+            "synonyms": []
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-number",
+        "values": []
+      },
+      {
+        "entity": "entity_6764",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "Need help",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "Book an appointment",
+            "synonyms": []
+          }
+        ],
+        "fuzzy_match": true
+      }
+    ],
+    "metadata": {
+      "api_version": {
+        "major_version": "v2",
+        "minor_version": "2018-11-08"
+      },
+      "skill": {
+        "counts": {
+          "actions": 4,
+          "intents": 2,
+          "entities": 17,
+          "data_types": 0,
+          "global_variables": 8
+        }
+      }
+    },
+    "variables": [
+      {
+        "title": "company_size",
+        "variable": "company_size",
+        "data_type": "number",
+        "description": ""
+      },
+      {
+        "title": "customer_email",
+        "variable": "customer_email",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "customer_name",
+        "variable": "customer_name",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "customer_phone",
+        "variable": "customer_phone",
+        "data_type": "any",
+        "description": ""
+      },
+      {
+        "title": "meeting_date",
+        "variable": "meeting_date",
+        "data_type": "date",
+        "description": ""
+      },
+      {
+        "title": "meeting_duration",
+        "variable": "meeting_duration",
+        "data_type": "number",
+        "description": ""
+      },
+      {
+        "title": "meeting_time",
+        "variable": "meeting_time",
+        "data_type": "time",
+        "description": ""
+      },
+      {
+        "title": "meeting_topic",
+        "variable": "meeting_topic",
+        "data_type": "string",
+        "description": ""
+      }
+    ],
+    "data_types": [],
+    "counterexamples": [],
+    "system_settings": {
+      "off_topic": {
+        "enabled": true
+      },
+      "topic_switch": {
+        "enabled": true,
+        "messages": {
+          "confirm_return": {
+            "text": "Return to previous topic?"
+          },
+          "confirm_switch": {
+            "text": "Switch from the current topic?"
+          }
+        },
+        "question_steps_threshold": 2
+      },
+      "disambiguation": {
+        "prompt": "Did you mean:",
+        "enabled": true,
+        "randomize": true,
+        "max_suggestions": 5,
+        "suggestion_text_policy": "title",
+        "none_of_the_above_prompt": "None of the above"
+      },
+      "intent_classification": {
+        "training_backend_version": "v2"
+      },
+      "spelling_auto_correct": true
+    },
+    "learning_opt_out": false,
+    "language": "en"
+  },
+  "description": "created for assistant 19bbb342-829c-42f6-aee4-b565b61c9fa3",
+  "dialog_settings": {
+    "source_assistant": "020de4a9-e097-49b4-9700-9871f2334cc7"
+  },
+  "created": "2022-11-05T09:57:03.855Z",
+  "updated": "2022-11-05T09:57:03.855Z",
+  "snapshot": "1",
+  "assistant_id": "19bbb342-829c-42f6-aee4-b565b61c9fa3",
+  "assistant_references": []
+}
